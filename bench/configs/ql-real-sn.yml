@@ -1,0 +1,109 @@
+benchmarks:
+  malloc:
+  - cfrac
+  - espresso
+  - gs
+  - leanN
+  - redis
+  - z3
+configs:
+- native|snmalloc
+- native|ql_snmalloc|ql_size-1
+- native|ql_snmalloc|ql_size-4096
+- native|ql_snmalloc|ql_size-8192
+- native|ql_snmalloc|ql_size-16384
+- native|ql_snmalloc|ql_size-32768
+- native|ql_snmalloc|ql_size-65536
+- native|ql_snmalloc|ql_size-131072
+- native|ql_snmalloc|ql_size-262144
+- native|ql_snmalloc|ql_size-524288
+- native|ql_snmalloc|ql_size-1048576
+- native|ql_snmalloc|ql_size-2097152
+heap_range: 6
+invocations: 10
+minheap_multiplier: 1.0
+modifiers:
+  ql_size:
+    type: EnvVar
+    val: '{0}'
+    var: QL_SIZE
+  ql_mimalloc:
+    type: EnvVar
+    val: /root/ql-benchmarks/allocators/libql.so /root/ql-benchmarks/allocators/libmimalloc.so
+    var: ALLOCATOR_PATH
+  ql_snmalloc:
+    type: EnvVar
+    val: /root/ql-benchmarks/allocators/libql.so /root/ql-benchmarks/allocators/libsnmallocshim.so
+    var: ALLOCATOR_PATH
+  ql_tcmalloc:
+    type: EnvVar
+    val: /root/ql-benchmarks/allocators/libql.so /root/ql-benchmarks/allocators/libtcmalloc.so
+    var: ALLOCATOR_PATH
+  mimalloc:
+    type: EnvVar
+    val: /root/ql-benchmarks/allocators/libmimalloc.so
+    var: ALLOCATOR_PATH
+  snmalloc:
+    type: EnvVar
+    val: /root/ql-benchmarks/allocators/libsnmallocshim.so
+    var: ALLOCATOR_PATH
+  tcmalloc:
+    type: EnvVar
+    val: /root/ql-benchmarks/allocators/libtcmalloc.so
+    var: ALLOCATOR_PATH
+runtimes:
+  native:
+    type: NativeExecutable
+spread_factor: 1
+suites:
+  malloc:
+    programs:
+      alloc_test1:
+        args: ''
+        path: /root/ql-benchmarks/bmscripts/alloc-test1-single.sh
+      alloc_testN:
+        args: '8'
+        path: /root/ql-benchmarks/bmscripts/alloc-testN-single.sh
+      cache_scratch:
+        args: 8 "1000 8 2000000"
+        path: /root/ql-benchmarks/bmscripts/cache-scratch-single.sh
+      cfrac:
+        args: ''
+        path: /root/ql-benchmarks/bmscripts/cfrac-single.sh
+      espresso:
+        args: ''
+        path: /root/ql-benchmarks/bmscripts/espresso-single.sh
+      glibc_simple:
+        args: ''
+        path: /root/ql-benchmarks/bmscripts/glibc-simple-single.sh
+      glibc_thread:
+        args: '8'
+        path: /root/ql-benchmarks/bmscripts/glibc-thread-single.sh
+      gs:
+        args: ''
+        path: /root/ql-benchmarks/bmscripts/gs-single.sh
+      larson:
+        args: 8 "5 8 1000 5000 100 4141"
+        path: /root/ql-benchmarks/bmscripts/larson-single.sh
+      leanN:
+        args: '8'
+        path: /root/ql-benchmarks/bmscripts/leanN-single.sh
+      redis:
+        args: ''
+        path: /root/ql-benchmarks/bmscripts/redis-single.sh
+      sh6bench:
+        args: '16'
+        path: /root/ql-benchmarks/bmscripts/sh6bench-single.sh
+      sh8bench:
+        args: '16'
+        path: /root/ql-benchmarks/bmscripts/sh8bench-single.sh
+      threadtest:
+        args: 8 "10000 100000 10 8"
+        path: /root/ql-benchmarks/bmscripts/threadtest-single.sh
+      xmalloc_test:
+        args: 8 "-t 5 -s 64"
+        path: /root/ql-benchmarks/bmscripts/xmalloc-test-single.sh
+      z3:
+        args: ''
+        path: /root/ql-benchmarks/bmscripts/z3-single.sh
+    type: BinaryBenchmarkSuite
