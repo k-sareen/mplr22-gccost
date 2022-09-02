@@ -1,0 +1,101 @@
+benchmarks:
+  dacapochopin-f480064:
+  - avrora
+  - xalan
+  - zxing
+  - fop
+  - sunflow
+  - luindex
+  - lusearch
+  - jython
+  - batik
+  - pmd
+  - eclipse
+configs:
+- jdk11-gc-space-overhead-core_f6986e5d-jdk_f5bfd51-vm_ca90b43f0f5-tc-analysis-mark_header|taskset|ms|s|c2|mmtk_gc-MarkSweep|tph|stress_factor-131072|probes_cp|probes_rustmmtk|probes_native
+heap_range: 6
+invocations: 1
+minheap_multiplier: 1.0
+modifiers:
+  c2:
+    excludes:
+      dacapochopin-f480064:
+      - tradebeans
+      - tradesoap
+    type: JVMArg
+    val: -XX:-TieredCompilation -Xcomp
+  mmtk_gc:
+    type: EnvVar
+    val: '{0}'
+    var: MMTK_PLAN
+  ms:
+    type: JVMArg
+    val: -XX:MetaspaceSize=500M -XX:+DisableExplicitGC
+  probes_cp:
+    type: JVMClasspath
+    val: /root/probes /root/probes/probes.jar
+  probes_native:
+    type: JVMArg
+    val: -Djava.library.path=/root/probes
+  probes_rustmmtk:
+    type: JVMArg
+    val: -Dprobes=RustMMTk
+  s:
+    type: JVMArg
+    val: -server
+  stress_factor:
+    type: EnvVar
+    val: '{0}'
+    var: MMTK_STRESS_FACTOR
+  taskset:
+    type: Wrapper
+    val: taskset -c 0-7
+  tph:
+    type: JVMArg
+    val: -XX:+UseThirdPartyHeap
+runtimes:
+  jdk11-gc-space-overhead-core_f6986e5d-jdk_1b1ccdc-vm_ca90b43f0f5:
+    home: /root/bench/build/jdk11-gc-space-overhead-core_f6986e5d-jdk_1b1ccdc-vm_ca90b43f0f5/images/jdk
+    release: 11
+    type: OpenJDK
+  jdk11-gc-space-overhead-core_f6986e5d-jdk_b6ad64c-vm_ca90b43f0f5-mi-analysis-mark_header:
+    home: /root/bench/build/jdk11-gc-space-overhead-core_f6986e5d-jdk_b6ad64c-vm_ca90b43f0f5-mi-analysis-mark_header/images/jdk
+    release: 11
+    type: OpenJDK
+  jdk11-gc-space-overhead-core_f6986e5d-jdk_f5bfd51-vm_ca90b43f0f5-tc-analysis-mark_header:
+    home: /root/bench/build/jdk11-gc-space-overhead-core_f6986e5d-jdk_f5bfd51-vm_ca90b43f0f5-tc-analysis-mark_header/images/jdk
+    release: 11
+    type: OpenJDK
+spread_factor: 1
+suites:
+  dacapochopin-f480064:
+    callback: probe.DacapoChopinCallback
+    minheap: temurin-11-G1
+    minheap_values:
+      temurin-11-G1:
+        avrora: 10240
+        batik: 10240
+        biojava: 10240
+        cassandra: 10240
+        eclipse: 10240
+        fop: 10240
+        graphchi: 10240
+        h2: 771
+        h2o: 83
+        jme: 10240
+        jython: 10240
+        kafka: 201
+        luindex: 10240
+        lusearch: 10240
+        pmd: 10240
+        sunflow: 10240
+        tomcat: 10240
+        tradebeans: 129
+        tradesoap: 113
+        xalan: 10240
+        zxing: 10240
+    path: /root/dacapo/dacapo-evaluation-git-f480064.jar
+    release: evaluation
+    timeout: null
+    timing_iteration: 1
+    type: DaCapo

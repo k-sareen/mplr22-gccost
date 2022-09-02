@@ -1,0 +1,42 @@
+benchmarks:
+  dacapochopin-f480064: [lusearch]
+configs: [jdk11-gc-proximity-core_f28eeb5d-jdk_97f12c2-vm_ca90b43f0f5-mi|ms|s|c2|mmtk_gc-MarkSweep|gclogs|querylogs|precise_stress-false|stress_factor-3460300800|tph|probes_cp|probes_rustmmtk|probes_native]
+heap_range: 6
+invocations: 35
+minheap_multiplier: 1.0
+modifiers:
+  c2:
+    excludes:
+      dacapochopin-29a657f: [tradebeans, tradesoap]
+      dacapochopin-f480064: [tradebeans, tradesoap]
+    type: JVMArg
+    val: -XX:-TieredCompilation -Xcomp
+  gclogs: {type: EnvVar, val: /root/bench/gc-proximity, var: MMTK_GCLOGS}
+  mmtk_gc: {type: EnvVar, val: '{0}', var: MMTK_PLAN}
+  ms: {type: JVMArg, val: '-XX:MetaspaceSize=500M -XX:+DisableExplicitGC'}
+  precise_stress: {type: EnvVar, val: '{0}', var: MMTK_PRECISE_STRESS}
+  probes_cp: {type: JVMClasspath, val: /root/probes /root/probes/probes.jar}
+  probes_native: {type: JVMArg, val: -Djava.library.path=/root/probes}
+  probes_rustmmtk: {type: JVMArg, val: -Dprobes=RustMMTk}
+  querylogs: {type: EnvVar, val: /root/bench/gc-proximity, var: MMTK_LUSEARCH_QUERYLOGS}
+  s: {type: JVMArg, val: -server}
+  stress_factor: {type: EnvVar, val: '{0}', var: MMTK_STRESS_FACTOR}
+  tph: {type: JVMArg, val: '-XX:+UseThirdPartyHeap'}
+runtimes:
+  jdk11-gc-proximity-core_f28eeb5d-jdk_97f12c2-vm_ca90b43f0f5-mi: {home: /root/bench/build/jdk11-gc-proximity-core_f28eeb5d-jdk_97f12c2-vm_ca90b43f0f5-mi/images/jdk,
+    release: 11, type: OpenJDK}
+spread_factor: 1
+suites:
+  dacapochopin-f480064:
+    callback: probe.DacapoChopinCallback
+    minheap: temurin-11-G1
+    minheap_values:
+      temurin-11-G1: {avrora: 5, batik: 186, biojava: 96, cassandra: 87, eclipse: 423,
+        fop: 13, graphchi: 255, h2: 771, h2o: 83, jme: 29, jython: 27, kafka: 201,
+        luindex: 41, lusearch: 12288, pmd: 43, sunflow: 27, tomcat: 19, tradebeans: 129,
+        tradesoap: 113, xalan: 7, zxing: 98}
+    path: /root/dacapo/dacapo-evaluation-git-6804496f.jar
+    release: evaluation
+    timeout: 5400
+    timing_iteration: 5
+    type: DaCapo
