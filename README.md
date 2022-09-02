@@ -18,6 +18,14 @@ $ sudo docker run -dit --privileged -m 32g --name gccost k-sareen/mplr22-gccost
 $ sudo docker exec -it gccost /bin/bash
 ```
 
+#### Running Benchmarks
+Note that for the Java benchmarks, if we are measuring time sensitive values, we
+run 4 warmup iterations and then measure the 5th iteration. Each configuration
+in a script is ran for the provided number of invocations. The results are
+stored in a folder that is printed out by the script. The results are saved as a
+`log.gz` file per configuration per benchmark. Each result file will have all
+the invocations for that benchmark and configuration combination.
+
 ### Space Overheads of GC
 You can run this experiment like so:
 ```console
